@@ -1,7 +1,7 @@
 export default function Button() {
     return (
         <div>
-            <h1>this will be a button</h1>
+            <h1>meow</h1>
         </div>
     )
 }
