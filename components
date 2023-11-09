@@ -1,0 +1,36 @@
+import React, { useEffect } from 'react';
+import { generateRandomString, sha256, base64encode, getToken } from '../utils/authUtils';
+
+const Login = () => {
+  useEffect(() => {
+    const clientId = 'YOUR_CLIENT_ID';
+    const redirectUri = 'http://localhost:8080'; // Replace with your actual redirect URI
+    const scope = 'user-read-private user-read-email';
+
+    const authUrl = new URL('https://accounts.spotify.com/authorize');
+    const codeVerifier = generateRandomString(64);
+
+    // Store codeVerifier in localStorage for later use
+    window.localStorage.setItem('code_verifier', codeVerifier);
+
+    const params = {
+      response_type: 'code',
+      client_id: clientId,
+      scope,
+      code_challenge_method: 'S256',
+      code_challenge: base64encode(await sha256(codeVerifier)),
+      redirect_uri: redirectUri,
+    };
+
+    authUrl.search = new URLSearchParams(params).toString();
+    window.location.href = authUrl.toString();
+  }, []);
+
+  return (
+    <div>
+      {/* Your login component UI */}
+    </div>
+  );
+};
+
+export default Login;
