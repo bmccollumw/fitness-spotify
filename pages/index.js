@@ -1,26 +1,21 @@
 
 import React, { useEffect } from 'react';
 import LoginPage from '../components/LoginPage';
+import Global from '../components/Global';
 import { getPlaylists } from '../utils/authUtils';
 
 const Home = () => {
   useEffect(() => {
-    // Check if the user is authenticated
+    // Check if the user is authenticated 
     const isAuthenticated = localStorage.getItem('access_token');
 
     if (!isAuthenticated) {
-        <LoginPage></LoginPage>
-    } else {
-      // User is authenticated, fetch and display playlists
-      getPlaylists();
-    }
-  }, []);
-
+      return <LoginPage></LoginPage>
+    };
+  })
   return (
-    <div>
-      {/* Display user playlists here */}
-    </div>
+    <Global></Global>
   );
 };
 
-export default Home;
+export default Home
