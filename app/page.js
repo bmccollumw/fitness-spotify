@@ -1,7 +1,19 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+// Note this is a server component
+import Image from "next/image";
+import styles from "./page.module.css";
+import { getServerSession } from "next-auth";
+// Note that you don't need to put ".js" at the end of imports. You can, but it's optional.
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { redirect } from "next/navigation";
 
-export default function Home() {
+export default async function Home() {
+  const sessionInfo = await getServerSession(authOptions);
+  const accessToken = sessionInfo.access_token
+  console.log('accessToken', accessToken);
+  if (!sessionInfo) {
+    // Not logged in! Let's redirect to "/api/auth/signin"
+    redirect("/api/auth/signin");
+  }
   return (
     <main className={styles.main}>
       <div className={styles.description}>
@@ -15,7 +27,7 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            By{' '}
+            By{" "}
             <Image
               src="/vercel.svg"
               alt="Vercel Logo"
@@ -38,6 +50,7 @@ export default function Home() {
           priority
         />
       </div>
+      {sessionInfo && <h1>Hey there, {sessionInfo.name}.</h1>}
 
       <div className={styles.grid}>
         <a
@@ -91,5 +104,5 @@ export default function Home() {
         </a>
       </div>
     </main>
-  )
+  );
 }
